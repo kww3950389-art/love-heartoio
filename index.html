@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Love Letter</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: #f8e1e1; /* Нежно-розовый фон */
+      height: 100vh;
+      font-family: 'Segoe Script', cursive;
+    }
+
+    /* Бегающее сердце */
+    .heart {
+      position: absolute;
+      font-size: 50px;
+      color: #f8a0c0; /* Нежно-розовый цвет */
+      cursor: pointer;
+      animation: moveAround 10s infinite linear alternate;
+      transition: opacity 0.5s ease-in-out;
+      filter: drop-shadow(0 0 10px #ff7d7d);
+    }
+
+    @keyframes moveAround {
+      0% { top: 10%; left: 10%; }
+      25% { top: 20%; left: 70%; }
+      50% { top: 70%; left: 60%; }
+      75% { top: 50%; left: 20%; }
+      100% { top: 80%; left: 80%; }
+    }
+
+    /* Падающие сердечки и цветы */
+    .fall {
+      position: fixed;
+      top: -50px;
+      font-size: 26px;
+      color: rgba(255, 192, 203, 0.8);
+      animation: fallDown linear forwards, glow 3s infinite alternate;
+      text-shadow: 0 0 10px rgba(255, 182, 193, 0.6),
+                   0 0 20px rgba(255, 105, 180, 0.5);
+    }
+
+    @keyframes fallDown {
+      to {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    @keyframes glow {
+      0% { color: #ffc0cb; text-shadow: 0 0 10px #ffb6c1, 0 0 20px #ff69b4; }
+      50% { color: #ff99cc; text-shadow: 0 0 15px #ff6fb1, 0 0 30px #ff8cd4; }
+      100% { color: #ffb6c1; text-shadow: 0 0 10px #ff69b4, 0 0 25px #ff99cc; }
+    }
+
+    /* Письмо */
+    .letter {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.7);
+      width: 320px;
+      padding: 25px;
+      text-align: center;
+      background: linear-gradient(135deg, rgba(255,192,203,0.95), rgba(255,240,245,0.95));
+      border-radius: 20px;
+      box-shadow: 0 0 25px rgba(255,192,203,0.8), 0 0 50px rgba(255,182,193,0.6);
+      border: 3px solid pink;
+      opacity: 0;
+      transition: all 1s ease;
+    }
+
+    .letter.show {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .letter h2 {
+      margin: 0;
+      font-size: 22px;
+      background: linear-gradient(90deg, #ff6fb1, #ffb6c1, #ff99cc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+
+    .letter::before, .letter::after {
+      content: "🌸";
+      font-size: 24px;
+      position: absolute;
+      top: -15px;
+      animation: sparkle 2s infinite alternate;
+    }
+    .letter::before { left: -15px; }
+    .letter::after { right: -15px; }
+
+    @keyframes sparkle {
+      from { transform: rotate(-15deg) scale(1); }
+      to { transform: rotate(15deg) scale(1.2); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="heart" id="heart">❤️</div>
+
+<div class="letter" id="letter">
+  <h2>Моё письмо</h2>
+  <p>Ты очень дорог(а) мне 💌</p>
+  <p>Моя Барсик, ты — как светлый луч в ночи,
+Твои глаза — бездонные, как тишина.
+Ты — нежность, в которой растворяюсь,
+Мой мир и покой, мой смысл и мечта.
+
+С Днём Рождения, моя бесконечная радость,
+Пусть каждый твой день будет полон света и тепла,
+Как твоя улыбка, что согревает сердце.
+</p>
+</div>
+
+<script>
+  const heart = document.getElementById("heart");
+  const letter = document.getElementById("letter");
+
+  function createFalling() {
+    const el = document.createElement("div");
+    el.classList.add("fall");
+    el.style.left = Math.random() * window.innerWidth + "px";
+    el.style.animationDuration = (3 + Math.random() * 3) + "s";
+    el.innerText = Math.random() > 0.5 ? "💖" : "🌸";
+    document.body.appendChild(el);
+
+    setTimeout(() => el.remove(), 6000);
+  }
+
+  heart.addEventListener("click", () => {
+    heart.style.opacity = 0; // Сердце исчезает
+    setTimeout(() => {
+      letter.classList.add("show"); // Показываем письмо
+      setInterval(createFalling, 250); // Падающие цветы и сердца
+    }, 500); // Задержка перед появлением письма
+  });
+</script>
+
+</body>
+</html>
